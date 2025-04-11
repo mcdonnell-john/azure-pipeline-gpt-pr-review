@@ -1,10 +1,10 @@
 {
-  "id": "b42fa530-c4a6-11ed-87f6-d1f44a1fead1",
+  "id": "33cf750f-7ccf-4fbf-8570-ea7891dab15a",
   "name": "GPTPullRequestReview",
   "friendlyName": "Review PullRequest by GPT",
   "description": "This task use OpenAi GPT model to review PullRequests",
-  "author": "Mustapha Larhrouch",
-  "helpMarkDown": "[More Information](https://github.com/mlarhrouch/azure-pipeline-gpt-pr-review)",
+  "author": "John McDonnell",
+  "helpMarkDown": "[More Information](https://github.com/mcdonnell-john/azure-pipeline-gpt-pr-review)",
   "category": "Utility",
   "visibility": [
     "Build"
