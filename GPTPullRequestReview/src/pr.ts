@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import * as tl from 'azure-pipelines-task-lib/task';
 import { Agent } from 'https';
 import fetch from 'node-fetch';

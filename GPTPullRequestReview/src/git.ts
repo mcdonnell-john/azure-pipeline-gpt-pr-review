@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { SimpleGitOptions, SimpleGit, simpleGit } from 'simple-git';
 import * as tl from 'azure-pipelines-task-lib/task';
 import binaryExtensions from 'binary-extensions';

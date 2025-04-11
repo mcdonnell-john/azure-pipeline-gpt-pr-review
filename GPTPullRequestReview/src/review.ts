@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import fetch from 'node-fetch';
 import { git } from './git';
 import { OpenAI } from 'openai';

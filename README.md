@@ -1,5 +1,6 @@
 # Use OpenAI GPT model to review Pull Requests for Azure Devops
 A task for Azure DevOps build pipelines to add GPT as PR reviewer
+This extension is based on https://github.com/mlarhrouch/azure-pipeline-gpt-pr-review 
 
 ## Installation
 
