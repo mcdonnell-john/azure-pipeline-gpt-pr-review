@@ -1,4 +1,4 @@
-import * as tl from "azure-pipelines-task-lib/task";
+import * as tl from 'azure-pipelines-task-lib/task';
 import { ClientOptions, OpenAI } from 'openai';
 import { deleteExistingComments } from './pr';
 import { reviewFile } from './review';
@@ -9,7 +9,10 @@ import https from 'https';
 async function run() {
   try {
     if (tl.getVariable('Build.Reason') !== 'PullRequest') {
-      tl.setResult(tl.TaskResult.Skipped, "This task should be run only when the build is triggered from a Pull Request.");
+      tl.setResult(
+        tl.TaskResult.Skipped,
+        'This task should be run only when the build is triggered from a Pull Request.'
+      );
       return;
     }
 
@@ -24,7 +27,7 @@ async function run() {
     }
 
     if (aoiEndpoint == undefined) {
-      const openAiConfiguration : ClientOptions = {
+      const openAiConfiguration: ClientOptions = {
         apiKey: apiKey,
       };
 
@@ -32,10 +35,10 @@ async function run() {
     }
 
     const httpsAgent = new https.Agent({
-      rejectUnauthorized: !supportSelfSignedCertificate
+      rejectUnauthorized: !supportSelfSignedCertificate,
     });
 
-    let targetBranch = getTargetBranchName();
+    const targetBranch = getTargetBranchName();
 
     if (!targetBranch) {
       tl.setResult(tl.TaskResult.Failed, 'No target branch found!');
@@ -47,12 +50,11 @@ async function run() {
     await deleteExistingComments(httpsAgent);
 
     for (const fileName of filesNames) {
-      await reviewFile(targetBranch, fileName, httpsAgent, apiKey, openai, aoiEndpoint)
+      await reviewFile(targetBranch, fileName, httpsAgent, apiKey, openai, aoiEndpoint);
     }
 
-    tl.setResult(tl.TaskResult.Succeeded, "Pull Request reviewed.");
-  }
-  catch (err: any) {
+    tl.setResult(tl.TaskResult.Succeeded, 'Pull Request reviewed.');
+  } catch (err: any) {
     tl.setResult(tl.TaskResult.Failed, err.message);
   }
 }

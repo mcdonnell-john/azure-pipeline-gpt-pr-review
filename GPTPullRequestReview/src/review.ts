@@ -3,10 +3,17 @@ import { git } from './git';
 import { OpenAI } from 'openai';
 import { addCommentToPR } from './pr';
 import { Agent } from 'https';
-import * as tl from "azure-pipelines-task-lib/task";
+import * as tl from 'azure-pipelines-task-lib/task';
 import { ChatCompletion } from 'openai/resources/chat/completions';
 
-export async function reviewFile(targetBranch: string, fileName: string, httpsAgent: Agent, apiKey: string, openai: OpenAI | undefined, aoiEndpoint: string | undefined) {
+export async function reviewFile(
+  targetBranch: string,
+  fileName: string,
+  httpsAgent: Agent,
+  apiKey: string,
+  openai: OpenAI | undefined,
+  aoiEndpoint: string | undefined
+) {
   console.log(`Start reviewing ${fileName} ...`);
 
   const defaultOpenAIModel = 'gpt-3.5-turbo';
@@ -29,33 +36,34 @@ export async function reviewFile(targetBranch: string, fileName: string, httpsAg
         model: tl.getInput('model') || defaultOpenAIModel,
         messages: [
           {
-            role: "system",
-            content: instructions
+            role: 'system',
+            content: instructions,
           },
           {
-            role: "user",
-            content: patch
-          }
+            role: 'user',
+            content: patch,
+          },
         ],
-        max_tokens: 500
+        max_tokens: 500,
       });
 
-      choices = response.choices
-    }
-    else if (aoiEndpoint) {
+      choices = response.choices;
+    } else if (aoiEndpoint) {
       const request = await fetch(aoiEndpoint, {
         method: 'POST',
         headers: { 'api-key': `${apiKey}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({
           max_tokens: 500,
-          messages: [{
-            role: "user",
-            content: `${instructions}\n, patch : ${patch}}`
-          }]
-        })
+          messages: [
+            {
+              role: 'user',
+              content: `${instructions}\n, patch : ${patch}}`,
+            },
+          ],
+        }),
       });
 
-      const response = await request.json()as ChatCompletion;
+      const response = (await request.json()) as ChatCompletion;
 
       choices = response.choices;
     }
@@ -63,14 +71,13 @@ export async function reviewFile(targetBranch: string, fileName: string, httpsAg
     if (choices && choices.length > 0) {
       const review = choices[0].message?.content as string;
 
-      if (review.trim() !== "No feedback.") {
+      if (review.trim() !== 'No feedback.') {
         await addCommentToPR(fileName, review, httpsAgent);
       }
     }
 
     console.log(`Review of ${fileName} completed.`);
-  }
-  catch (error: any) {
+  } catch (error: any) {
     if (error.response) {
       console.log(error.response.status);
       console.log(error.response.data);
