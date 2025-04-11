@@ -1,6 +1,6 @@
-# GPT Pull Request review Task for Azure Pipelines
+# OpenAI GPT Pull Request Reviewer Task for Azure Pipelines
 
-The GPT Pull Request Review Task for Azure Pipelines is designed to use the GPT model from OpenAI to review Pull Requests and provide feedback as comments in the Pull Request.
+The Open AI Pull Request Reviewer Task for Azure Pipelines is designed to use OpenAI to review Pull Requests and provide feedback as comments in the Pull Request.
 
 ## Setup
 

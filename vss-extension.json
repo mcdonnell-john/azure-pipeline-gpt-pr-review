@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
-    "id": "GPTPullRequestReview",
-    "name": "GPT Pull Request Review",
+    "id": "OpenAIPRReviewer",
+    "name": "Open AI Pull Request Reviewer",
     "version": "0.12.3",
     "publisher": "mcdonnell-john",
     "galleryFlags": [
@@ -12,13 +12,13 @@
         {
             "id": "Microsoft.VisualStudio.Services"
         }
-    ],    
-    "description": "A task that review Pull Request using GPT model from OpenAI",
+    ],
+    "description": "A task that review Pull Request using OpenAI",
     "categories": [
         "Azure Pipelines"
     ],
     "icons": {
-        "default": "images/icon.png"        
+        "default": "images/icon.png"
     },
     "tags": [
         "OpenAI",
@@ -31,24 +31,27 @@
             "path": "GPTPullRequestReview"
         }
     ],
-    "repository" : {
-        "type" : "git",
-        "uri" : "https://github.com/mcdonnell-john/azure-pipeline-gpt-pr-review"
+    "repository": {
+        "type": "git",
+        "uri": "https://github.com/mcdonnell-john/azure-pipeline-gpt-pr-review"
     },
     "content": {
         "details": {
             "path": "overview.md"
+        },
+        "license": {
+            "path": "LICENSE"
         }
     },
     "contributions": [
         {
-            "id": "GPTPullRequestReview",
+            "id": "OpenAIPRReviewer",
             "type": "ms.vss-distributed-task.task",
             "targets": [
                 "ms.vss-distributed-task.tasks"
             ],
             "properties": {
-                "name": "GPTPullRequestReview"
+                "name": "OpenAIPRReviewer"
             }
         }
     ]

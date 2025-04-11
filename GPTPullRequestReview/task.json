@@ -1,8 +1,8 @@
 {
   "id": "33cf750f-7ccf-4fbf-8570-ea7891dab15a",
-  "name": "GPTPullRequestReview",
+  "name": "OpenAIPRReviewer",
   "friendlyName": "Review PullRequest by GPT",
-  "description": "This task use OpenAi GPT model to review PullRequests",
+  "description": "This task uses Open AI to review PullRequests",
   "author": "John McDonnell",
   "helpMarkDown": "[More Information](https://github.com/mcdonnell-john/azure-pipeline-gpt-pr-review)",
   "category": "Utility",
@@ -15,8 +15,8 @@
     "Minor": "12",
     "Patch": "3"
   },
-  "minimumAgentVersion": "1.95.0",
-  "instanceNameFormat": "GPTPullRequestReview $(message)",
+  "minimumAgentVersion": "2.226.1",
+  "instanceNameFormat": "OpenAIPRReviewer $(message)",
   "inputs": [
     {
       "name": "api_key",
@@ -24,12 +24,12 @@
       "label": "Api key",
       "defaultValue": "",
       "required": true,
-      "helpMarkDown": "Api key of OpenAi or Azure OpenAI."
+      "helpMarkDown": "API key of Open AI or Azure OpenAI."
     },
     {
       "name": "model",
       "type": "pickList",
-      "label": "OpenAI model",
+      "label": "Open AI model",
       "required": false,
       "options": {
         "": "",
@@ -37,15 +37,15 @@
         "gpt-3.5-turbo": "GPT 3.5 Turbo",
         "gpt-3.5-turbo-16k": "GPT 3.5 Turbo 16k"
       },
-      "helpMarkDown": "The OpenAI model to use. not used if you use Azure OpenAI. if no model is selected, the GPT 3.5 Turbo model is used."
+      "helpMarkDown": "The Open AI model to use. not used if you use Azure Open AI. if no model is selected, the GPT 3.5 Turbo model is used."
     },
     {
       "name": "aoi_endpoint",
       "type": "string",
-      "label": "Azure OpenApi Endpoint",
+      "label": "Azure Open AI API Endpoint",
       "defaultValue": "",
       "required": false,
-      "helpMarkDown": "Azure OpenApi Endpoint, leave empty to use default endpoint. (optional)"
+      "helpMarkDown": "Azure Open AI API Endpoint, leave empty to use default endpoint. (optional)"
     },
     {
       "name": "support_self_signed_certificate",
@@ -57,11 +57,8 @@
     }
   ],
   "execution": {
-    "Node10": {
-      "target": "dist/index.js"
-    },
     "Node20_1": {
-       "target": "dist/index.js"
-     }
+      "target": "dist/index.js"
+    }
   }
 }
