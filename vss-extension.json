@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "OpenAIPRReviewer",
     "name": "Open AI Pull Request Reviewer",
-    "version": "0.12.3",
+    "version": "1.0.0",
     "publisher": "mcdonnell-john",
     "galleryFlags": [
         "Public",
