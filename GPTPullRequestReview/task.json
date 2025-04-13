@@ -2,7 +2,7 @@
   "id": "33cf750f-7ccf-4fbf-8570-ea7891dab15a",
   "name": "OpenAIPRReviewer",
   "friendlyName": "Review PullRequest by GPT",
-  "description": "This task uses Open AI to review PullRequests",
+  "description": "This task uses OpenAI to automatically review pull requests.",
   "author": "John McDonnell",
   "helpMarkDown": "[More Information](https://github.com/mcdonnell-john/azure-pipeline-gpt-pr-review)",
   "category": "Utility",
@@ -11,9 +11,9 @@
   ],
   "demands": [],
   "version": {
-    "Major": "0",
-    "Minor": "12",
-    "Patch": "3"
+    "Major": "1",
+    "Minor": "0",
+    "Patch": "0"
   },
   "minimumAgentVersion": "2.226.1",
   "instanceNameFormat": "OpenAIPRReviewer $(message)",
@@ -21,31 +21,49 @@
     {
       "name": "api_key",
       "type": "string",
-      "label": "Api key",
+      "label": "API key",
       "defaultValue": "",
       "required": true,
-      "helpMarkDown": "API key of Open AI or Azure OpenAI."
+      "helpMarkDown": "API key of OpenAI or Azure OpenAI."
     },
     {
       "name": "model",
       "type": "pickList",
-      "label": "Open AI model",
+      "label": "OpenAI model",
       "required": false,
       "options": {
         "": "",
+        "gpt-4o": "GPT 4o",
         "gpt-4": "GPT 4",
+        "gpt-4-turbo": "GPT 4 Turbo",
         "gpt-3.5-turbo": "GPT 3.5 Turbo",
         "gpt-3.5-turbo-16k": "GPT 3.5 Turbo 16k"
       },
-      "helpMarkDown": "The Open AI model to use. not used if you use Azure Open AI. if no model is selected, the GPT 3.5 Turbo model is used."
+      "helpMarkDown": "The OpenAI model to use. Ignored if using Azure OpenAI. If no model is selected, gpt-4o will be used by default."
     },
     {
-      "name": "aoi_endpoint",
+      "name": "systemPrompt",
       "type": "string",
-      "label": "Azure Open AI API Endpoint",
+      "label": "OpenAI System Prompt",
+      "required": false,
+      "defaultValue": "",
+      "helpMarkDown": "The system prompt that guides the AI's review behavior and tone. (Optional)"
+    },
+    {
+      "name": "azure_openai_endpoint",
+      "type": "string",
+      "label": "Azure OpenAI API Endpoint",
       "defaultValue": "",
       "required": false,
-      "helpMarkDown": "Azure Open AI API Endpoint, leave empty to use default endpoint. (optional)"
+      "helpMarkDown": "If using Azure OpenAI, specify the API endpoint here. Leave empty to use the public OpenAI service instead. (Optional)"
+    },
+    {
+      "name": "azure_openai_deployment",
+      "type": "string",
+      "label": "Azure OpenAI Deployment Name",
+      "required": false,
+      "defaultValue": "",
+      "helpMarkDown": "Deployment name to use in Azure OpenAI. This is different from the model name. (Required if using Azure OpenAI)"
     },
     {
       "name": "support_self_signed_certificate",

@@ -1,26 +1,25 @@
 /* eslint-disable no-console */
-import fetch from 'node-fetch';
 import { git } from './git';
-import { OpenAI } from 'openai';
 import { addCommentToPR } from './pr';
 import { Agent } from 'https';
 import * as tl from 'azure-pipelines-task-lib/task';
-import { ChatCompletion } from 'openai/resources/chat/completions';
+import { ChatCompletionCreateParamsNonStreaming } from 'openai/resources/chat/completions';
+import { createOpenAIClient } from './openaiClient';
 
 export async function reviewFile(
-  targetBranch: string,
-  fileName: string,
-  httpsAgent: Agent,
-  apiKey: string,
-  openai: OpenAI | undefined,
-  aoiEndpoint: string | undefined
+    targetBranch: string,
+    fileName: string,
+    httpsAgent: Agent,
+    apiKey: string,
+    azureOpenAiEndpoint: string | undefined,
+    azureOpenAiDeployment: string | undefined
 ) {
-  console.log(`Start reviewing ${fileName} ...`);
+    console.log(`Start reviewing ${fileName} ...`);
 
-  const defaultOpenAIModel = 'gpt-3.5-turbo';
-  const patch = await git.diff([targetBranch, '--', fileName]);
+    const defaultOpenAIModel = 'gpt-4o';
+    const patch = await git.diff([targetBranch, '--', fileName]);
 
-  const instructions = `Act as a code reviewer of a Pull Request, providing feedback on possible bugs and clean code issues.
+    const defaultSystemPrompt = `Act as a code reviewer of a Pull Request, providing feedback on possible bugs and clean code issues.
         You are provided with the Pull Request changes in a patch format.
         Each patch entry has the commit message in the Subject line followed by the code changes (diffs) in a unidiff format.
 
@@ -29,61 +28,40 @@ export async function reviewFile(
                 - If there's no bugs and the changes are correct, write only 'No feedback.'
                 - If there's bug or uncorrect code changes, don't write 'No feedback.'`;
 
-  try {
-    let choices: any;
+    try {
+        const systemPrompt = tl.getInput('systemPrompt') || defaultSystemPrompt;
+        const model = tl.getInput('model') || defaultOpenAIModel;
 
-    if (openai) {
-      const response = await openai.chat.completions.create({
-        model: tl.getInput('model') || defaultOpenAIModel,
-        messages: [
-          {
-            role: 'system',
-            content: instructions,
-          },
-          {
-            role: 'user',
-            content: patch,
-          },
-        ],
-        max_tokens: 500,
-      });
+        const client = createOpenAIClient(apiKey, azureOpenAiEndpoint, azureOpenAiDeployment);
 
-      choices = response.choices;
-    } else if (aoiEndpoint) {
-      const request = await fetch(aoiEndpoint, {
-        method: 'POST',
-        headers: { 'api-key': `${apiKey}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          max_tokens: 500,
-          messages: [
-            {
-              role: 'user',
-              content: `${instructions}\n, patch : ${patch}}`,
-            },
-          ],
-        }),
-      });
+        const params: ChatCompletionCreateParamsNonStreaming = {
+            messages: [
+                { role: 'system', content: systemPrompt },
+                { role: 'user', content: patch },
+            ],
+            max_tokens: 500,
+            model: azureOpenAiEndpoint ? (azureOpenAiDeployment as string) : (model as string),
+        };
 
-      const response = (await request.json()) as ChatCompletion;
+        const response = await client.chat.completions.create(params);
 
-      choices = response.choices;
+        const choices = response.choices;
+
+        if (choices && choices.length > 0) {
+            const review = choices[0].message?.content as string;
+
+            if (review.trim() !== 'No feedback.') {
+                await addCommentToPR(fileName, review, httpsAgent);
+            }
+        }
+
+        console.log(`Review of ${fileName} completed.`);
+    } catch (error: any) {
+        if (error.response) {
+            console.log(error.response.status);
+            console.log(error.response.data);
+        } else {
+            console.log(error.message);
+        }
     }
-
-    if (choices && choices.length > 0) {
-      const review = choices[0].message?.content as string;
-
-      if (review.trim() !== 'No feedback.') {
-        await addCommentToPR(fileName, review, httpsAgent);
-      }
-    }
-
-    console.log(`Review of ${fileName} completed.`);
-  } catch (error: any) {
-    if (error.response) {
-      console.log(error.response.status);
-      console.log(error.response.data);
-    } else {
-      console.log(error.message);
-    }
-  }
 }
