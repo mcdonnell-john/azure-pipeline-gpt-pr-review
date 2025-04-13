@@ -6,6 +6,8 @@ import { getTargetBranchName } from './utils';
 import { getChangedFiles } from './git';
 import https from 'https';
 
+const SUCCESS_MESSAGE = 'Pull Request reviewed.';
+
 async function run() {
   try {
     if (tl.getVariable('Build.Reason') !== 'PullRequest') {
@@ -21,12 +23,12 @@ async function run() {
     const apiKey = tl.getInput('api_key', true);
     const aoiEndpoint = tl.getInput('aoi_endpoint');
 
-    if (apiKey == undefined) {
+    if (!apiKey) {
       tl.setResult(tl.TaskResult.Failed, 'No Api Key provided!');
       return;
     }
 
-    if (aoiEndpoint == undefined) {
+    if (!aoiEndpoint) {
       const openAiConfiguration: ClientOptions = {
         apiKey: apiKey,
       };
@@ -53,7 +55,7 @@ async function run() {
       await reviewFile(targetBranch, fileName, httpsAgent, apiKey, openai, aoiEndpoint);
     }
 
-    tl.setResult(tl.TaskResult.Succeeded, 'Pull Request reviewed.');
+    tl.setResult(tl.TaskResult.Succeeded, SUCCESS_MESSAGE);
   } catch (err: any) {
     tl.setResult(tl.TaskResult.Failed, err.message);
   }
