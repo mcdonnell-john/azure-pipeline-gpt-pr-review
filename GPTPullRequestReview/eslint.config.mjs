@@ -38,7 +38,14 @@ export default defineConfig([{
     },
 
     rules: {
-        "prettier/prettier": "error",
+        "prettier/prettier": ["error", {
+            tabWidth: 4,
+            singleQuote: true,
+            semi: true,
+            printWidth: 100,
+            trailingComma: "es5",
+            endOfLine: "lf"
+        }],
         "no-console": "warn",
         semi: ["error", "always"],
         quotes: ["error", "single"],
