@@ -5,7 +5,6 @@
     "version": "1.0.0",
     "publisher": "mcdonnell-john",
     "galleryFlags": [
-        "Public",
         "Preview"
     ],
     "targets": [
@@ -51,7 +50,7 @@
                 "ms.vss-distributed-task.tasks"
             ],
             "properties": {
-                "name": "OpenAIPRReviewer"
+                "name": "GPTPullRequestReview"
             }
         }
     ]
