@@ -1,0 +1,10 @@
+const fs = require('fs');
+
+const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+const ext = JSON.parse(fs.readFileSync('vss-extension.json', 'utf8'));
+
+ext.version = pkg.version;  // get npm package version
+
+fs.writeFileSync('vss-extension.json', JSON.stringify(ext, null, 2));
+
+console.log(`vss-extension.json version updated to ${pkg.version}`);
