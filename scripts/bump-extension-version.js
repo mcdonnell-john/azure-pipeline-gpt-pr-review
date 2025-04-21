@@ -11,7 +11,7 @@ fs.writeFileSync(extPath, JSON.stringify(ext, null, 2));
 console.log(`✅ vss-extension.json version set to ${pkg.version}`);
 
 // --- Update task.json patch version ---
-const taskPath = JSON.parse(fs.readFileSync('./GPTPullRequestReview/task.json', 'utf8'));
+const taskPath = './GPTPullRequestReview/task.json';
 const task = JSON.parse(fs.readFileSync(taskPath, 'utf8'));
 
 const [major, minor, patch] = task.version;

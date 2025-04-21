@@ -36,7 +36,7 @@ jobs:
       - name: Bump extension version
         run: |
           node scripts/bump-extension-version.js
-          git add .vss-extension.json
+          git add .
           git commit -m "Sync versions [skip ci]"
           git push
 
