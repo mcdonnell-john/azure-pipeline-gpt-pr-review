@@ -2,7 +2,8 @@ import { OpenAI, AzureOpenAI } from 'openai';
 export function createOpenAIClient(
     apiKey: string,
     azureOpenAiEndpoint?: string,
-    azureOpenAiDeployment?: string
+    azureOpenAiDeployment?: string,
+    azureApiVersion?: string
 ) {
     if (azureOpenAiEndpoint) {
         if (!azureOpenAiDeployment) {
@@ -12,6 +13,7 @@ export function createOpenAIClient(
             apiKey,
             endpoint: azureOpenAiEndpoint,
             deployment: azureOpenAiDeployment,
+            apiVersion: azureApiVersion,
         });
     } else {
         return new OpenAI({ apiKey });

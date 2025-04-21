@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import { git } from './git';
 import { addCommentToPR } from './pr';
-import { Agent } from 'https';
 import * as tl from 'azure-pipelines-task-lib/task';
 import { ChatCompletionCreateParamsNonStreaming } from 'openai/resources/chat/completions';
 import { createOpenAIClient } from './openaiClient';
@@ -9,10 +8,10 @@ import { createOpenAIClient } from './openaiClient';
 export async function reviewFile(
     targetBranch: string,
     fileName: string,
-    httpsAgent: Agent,
     apiKey: string,
     azureOpenAiEndpoint: string | undefined,
-    azureOpenAiDeployment: string | undefined
+    azureOpenAiDeployment: string | undefined,
+    azureOpenAiApiVersion: string | undefined
 ) {
     console.log(`Start reviewing ${fileName} ...`);
 
@@ -32,7 +31,12 @@ export async function reviewFile(
         const systemPrompt = tl.getInput('systemPrompt') || defaultSystemPrompt;
         const model = tl.getInput('model') || defaultOpenAIModel;
 
-        const client = createOpenAIClient(apiKey, azureOpenAiEndpoint, azureOpenAiDeployment);
+        const client = createOpenAIClient(
+            apiKey,
+            azureOpenAiEndpoint,
+            azureOpenAiDeployment,
+            azureOpenAiApiVersion
+        );
 
         const params: ChatCompletionCreateParamsNonStreaming = {
             messages: [
@@ -42,6 +46,7 @@ export async function reviewFile(
             max_tokens: 500,
             model: azureOpenAiEndpoint ? (azureOpenAiDeployment as string) : (model as string),
         };
+        console.log(`Message to send: ${JSON.stringify(params)}`);
 
         const response = await client.chat.completions.create(params);
 
@@ -51,7 +56,7 @@ export async function reviewFile(
             const review = choices[0].message?.content as string;
 
             if (review.trim() !== 'No feedback.') {
-                await addCommentToPR(fileName, review, httpsAgent);
+                await addCommentToPR(fileName, review);
             }
         }
 

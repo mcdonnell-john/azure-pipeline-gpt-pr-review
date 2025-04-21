@@ -36,8 +36,8 @@ jobs:
       - name: Bump extension version
         run: |
           node scripts/bump-extension-version.js
-          git add vss-extension.json
-          git commit -m "Sync extension version [skip ci]"
+          git add .vss-extension.json
+          git commit -m "Sync versions [skip ci]"
           git push
 
       - name: Install tfx-cli

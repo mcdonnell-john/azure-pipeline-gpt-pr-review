@@ -17,23 +17,21 @@ async function run() {
             return;
         }
 
-        const supportSelfSignedCertificate = tl.getBoolInput('support_self_signed_certificate');
         const apiKey = tl.getInput('api_key', true);
         const azureOpenAiEndpoint = tl.getInput('azure_openai_endpoint');
         const azureOpenAiDeployment = tl.getInput('azure_openai_deployment');
+        const azureOpenAiApiVersion = tl.getInput('azure_openai_api_version');
 
         if (!apiKey) {
             tl.setResult(tl.TaskResult.Failed, 'No Api Key provided!');
             return;
         }
 
-        if (azureOpenAiEndpoint && !azureOpenAiDeployment) {
-            throw new Error('Azure OpenAI endpoint is provided but deployment name is missing.');
+        if (azureOpenAiEndpoint && !(azureOpenAiDeployment || azureOpenAiApiVersion)) {
+            throw new Error(
+                'Azure OpenAI endpoint is provided but deployment name and/or api version is missing.'
+            );
         }
-
-        const httpsAgent = new https.Agent({
-            rejectUnauthorized: !supportSelfSignedCertificate,
-        });
 
         const targetBranch = getTargetBranchName();
 
@@ -44,16 +42,16 @@ async function run() {
 
         const filesNames = await getChangedFiles(targetBranch);
 
-        await deleteExistingComments(httpsAgent);
+        await deleteExistingComments();
 
         for (const fileName of filesNames) {
             await reviewFile(
                 targetBranch,
                 fileName,
-                httpsAgent,
                 apiKey,
                 azureOpenAiEndpoint,
-                azureOpenAiDeployment
+                azureOpenAiDeployment,
+                azureOpenAiApiVersion
             );
         }
 

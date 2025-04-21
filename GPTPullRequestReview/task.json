@@ -13,7 +13,7 @@
     "version": {
         "Major": "1",
         "Minor": "0",
-        "Patch": "0"
+        "Patch": "14"
     },
     "minimumAgentVersion": "2.226.1",
     "instanceNameFormat": "OpenAIPRReviewer $(message)",
@@ -66,10 +66,19 @@
             "name": "azure_openai_deployment",
             "type": "string",
             "label": "Azure OpenAI Deployment Name",
-            "visibleRule": "eq(openAIProvider, Azure OpenAI)openAIProvider = AzureOpenAI",
+            "visibleRule": "openAIProvider = AzureOpenAI",
             "required": false,
             "defaultValue": "",
             "helpMarkDown": "Deployment name to use in Azure OpenAI. This is different from the model name."
+        },
+        {
+            "name": "azureOpenAiApiVersion",
+            "type": "string",
+            "label": "Azure OpenAI API Version",
+            "visibleRule": "openAIProvider = AzureOpenAI",
+            "required": false,
+            "defaultValue": "",
+            "helpMarkDown": "API Version to use in Azure OpenAI. This is different from the model name."
         },
         {
             "name": "enableAdvancedSettings",
@@ -99,15 +108,6 @@
             "required": false,
             "defaultValue": "",
             "helpMarkDown": "The system prompt that guides the AI's review behavior and tone. (Optional)"
-        },
-        {
-            "name": "support_self_signed_certificate",
-            "type": "boolean",
-            "label": "Support self-signed certificate",
-            "visibleRule": "enableAdvancedSettings = true",
-            "defaultValue": "false",
-            "required": false,
-            "helpMarkDown": "Select this option to support self-signed certificate."
         }
     ],
     "execution": {

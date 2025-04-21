@@ -14,7 +14,19 @@ export const git: SimpleGit = simpleGit(gitOptions);
 export async function getChangedFiles(targetBranch: string) {
     await git.addConfig('core.pager', 'cat');
     await git.addConfig('core.quotepath', 'false');
-    await git.fetch();
+    try {
+        await git.fetch();
+    } catch (err: any) {
+        const hint = `
+Git fetch failed — this might be because 'persistCredentials: true' is not set in your pipeline.
+
+Make sure your YAML includes:
+  - checkout: self
+    persistCredentials: true
+        `.trim();
+
+        throw new Error(`${err.message}\n\n${hint}`);
+    }
 
     const diffs = await git.diff([targetBranch, '--name-only', '--diff-filter=AM']);
     const files = diffs.split('\n').filter((line) => line.trim().length > 0);
