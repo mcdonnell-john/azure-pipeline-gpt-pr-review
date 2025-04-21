@@ -41,7 +41,7 @@
             "name": "model",
             "type": "pickList",
             "label": "OpenAI model",
-            "visibleRule": "eq(openAIProvider, ChatGPT)",
+            "visibleRule": "openAIProvider = ChatGPT",
             "required": false,
             "options": {
                 "": "",
@@ -57,7 +57,7 @@
             "name": "azure_openai_endpoint",
             "type": "string",
             "label": "Azure OpenAI API Endpoint",
-            "visibleRule": "eq(openAIProvider, Azure OpenAI)",
+            "visibleRule": "openAIProvider = AzureOpenAI",
             "defaultValue": "",
             "required": false,
             "helpMarkDown": "If using Azure OpenAI, specify the API endpoint here."
@@ -66,22 +66,10 @@
             "name": "azure_openai_deployment",
             "type": "string",
             "label": "Azure OpenAI Deployment Name",
-            "visibleRule": "eq(openAIProvider, Azure OpenAI)",
+            "visibleRule": "eq(openAIProvider, Azure OpenAI)openAIProvider = AzureOpenAI",
             "required": false,
             "defaultValue": "",
             "helpMarkDown": "Deployment name to use in Azure OpenAI. This is different from the model name."
-        },
-        {
-            "name": "advancedSettingsLabel",
-            "type": "string",
-            "label": "Advanced Settings",
-            "visibleRule": "eq(enableAdvancedSettings, true)",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "_Configure additional options for fine-tuned behavior._",
-            "properties": {
-                "isReadOnly": true
-            }
         },
         {
             "name": "enableAdvancedSettings",
@@ -92,10 +80,22 @@
             "helpMarkDown": "Select this option to enable advanced settings."
         },
         {
+            "name": "advancedSettingsLabel",
+            "type": "string",
+            "label": "Advanced Settings",
+            "visibleRule": "enableAdvancedSettings = true",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "_Configure additional options for fine-tuned behavior._",
+            "properties": {
+                "isReadOnly": true
+            }
+        },
+        {
             "name": "systemPrompt",
             "type": "string",
             "label": "OpenAI System Prompt",
-            "visibleRule": "eq(enableAdvancedSettings, true)",
+            "visibleRule": "enableAdvancedSettings = true",
             "required": false,
             "defaultValue": "",
             "helpMarkDown": "The system prompt that guides the AI's review behavior and tone. (Optional)"
@@ -104,7 +104,7 @@
             "name": "support_self_signed_certificate",
             "type": "boolean",
             "label": "Support self-signed certificate",
-            "visibleRule": "eq(enableAdvancedSettings, true)",
+            "visibleRule": "enableAdvancedSettings = true",
             "defaultValue": "false",
             "required": false,
             "helpMarkDown": "Select this option to support self-signed certificate."
