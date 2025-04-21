@@ -18,7 +18,7 @@ const { Major, Minor, Patch } = task.version;
 task.version = {
     Major,
     Minor,
-    Patch: Patch + 1
+    Patch: String(Number(Patch) + 1)
 };
 
 fs.writeFileSync(taskPath, JSON.stringify(task, null, 2));
