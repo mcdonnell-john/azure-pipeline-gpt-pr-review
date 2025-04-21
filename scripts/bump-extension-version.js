@@ -22,4 +22,4 @@ task.version = {
 };
 
 fs.writeFileSync(taskPath, JSON.stringify(task, null, 2));
-console.log(`✅ task.json patch version bumped to ${task.version.join('.')}`);
+console.log(`✅ task.json patch version bumped to ${task.version.Major}.${task.version.Minor}.${task.version.Patch}`);
