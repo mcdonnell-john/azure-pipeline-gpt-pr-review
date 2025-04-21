@@ -19,6 +19,17 @@
     "instanceNameFormat": "OpenAIPRReviewer $(message)",
     "inputs": [
         {
+            "name": "openAIProvider",
+            "type": "pickList",
+            "label": "OpenAI Provider",
+            "options": {
+                "ChatGPT": "ChatGPT",
+                "AzureOpenAI": "Azure OpenAI"
+            },
+            "defaultValue": "ChatGPT",
+            "required": true
+        },
+        {
             "name": "api_key",
             "type": "string",
             "label": "API key",
@@ -30,6 +41,7 @@
             "name": "model",
             "type": "pickList",
             "label": "OpenAI model",
+            "visibleRule": "eq(openAIProvider, ChatGPT)",
             "required": false,
             "options": {
                 "": "",
@@ -39,36 +51,60 @@
                 "gpt-3.5-turbo": "GPT 3.5 Turbo",
                 "gpt-3.5-turbo-16k": "GPT 3.5 Turbo 16k"
             },
-            "helpMarkDown": "The OpenAI model to use. Ignored if using Azure OpenAI. If no model is selected, gpt-4o will be used by default."
-        },
-        {
-            "name": "systemPrompt",
-            "type": "string",
-            "label": "OpenAI System Prompt",
-            "required": false,
-            "defaultValue": "",
-            "helpMarkDown": "The system prompt that guides the AI's review behavior and tone. (Optional)"
+            "helpMarkDown": "The OpenAI model to use.  If no model is selected, gpt-4o will be used by default."
         },
         {
             "name": "azure_openai_endpoint",
             "type": "string",
             "label": "Azure OpenAI API Endpoint",
+            "visibleRule": "eq(openAIProvider, Azure OpenAI)",
             "defaultValue": "",
             "required": false,
-            "helpMarkDown": "If using Azure OpenAI, specify the API endpoint here. Leave empty to use the public OpenAI service instead. (Optional)"
+            "helpMarkDown": "If using Azure OpenAI, specify the API endpoint here."
         },
         {
             "name": "azure_openai_deployment",
             "type": "string",
             "label": "Azure OpenAI Deployment Name",
+            "visibleRule": "eq(openAIProvider, Azure OpenAI)",
             "required": false,
             "defaultValue": "",
-            "helpMarkDown": "Deployment name to use in Azure OpenAI. This is different from the model name. (Required if using Azure OpenAI)"
+            "helpMarkDown": "Deployment name to use in Azure OpenAI. This is different from the model name."
+        },
+        {
+            "name": "advancedSettingsLabel",
+            "type": "string",
+            "label": "Advanced Settings",
+            "visibleRule": "eq(enableAdvancedSettings, true)",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "_Configure additional options for fine-tuned behavior._",
+            "properties": {
+                "isReadOnly": true
+            }
+        },
+        {
+            "name": "enableAdvancedSettings",
+            "type": "boolean",
+            "label": "Enable Advanced Settings",
+            "defaultValue": "false",
+            "required": false,
+            "helpMarkDown": "Select this option to enable advanced settings."
+        },
+        {
+            "name": "systemPrompt",
+            "type": "string",
+            "label": "OpenAI System Prompt",
+            "visibleRule": "eq(enableAdvancedSettings, true)",
+            "required": false,
+            "defaultValue": "",
+            "helpMarkDown": "The system prompt that guides the AI's review behavior and tone. (Optional)"
         },
         {
             "name": "support_self_signed_certificate",
             "type": "boolean",
             "label": "Support self-signed certificate",
+            "visibleRule": "eq(enableAdvancedSettings, true)",
             "defaultValue": "false",
             "required": false,
             "helpMarkDown": "Select this option to support self-signed certificate."

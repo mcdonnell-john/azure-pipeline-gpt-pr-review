@@ -1,6 +1,6 @@
 # OpenAI GPT Pull Request Reviewer Task for Azure Pipelines
 
-The Open AI Pull Request Reviewer Task for Azure Pipelines is designed to use OpenAI to review Pull Requests and provide feedback as comments in the Pull Request.
+The OpenAI Pull Request Reviewer Task for Azure Pipelines is designed to use OpenAI to review Pull Requests and provide feedback as comments in the Pull Request.
 
 ## Setup
 
@@ -30,13 +30,13 @@ Enable the option "Allow scripts to access the OAuth token" in the "Agent job" p
 
 ![allow_access_token](https://github.com/mcdonnell-john/azure-pipeline-gpt-pr-review/blob/main/images/allow_access_token.png?raw=true)
 
-### Azure Open AI service
+### Azure OpenAI service
 
-If you choose to use the Azure Open AI service, you must fill in the endpoint and API key of Azure OpenAI. The format of the endpoint is as follows: https://{XXXXXXXX}.openai.azure.com/openai/deployments/{MODEL_NAME}/chat/completions?api-version={API_VERSION}
+If you choose to use the Azure OpenAI service, you must fill in the endpoint and API key of Azure OpenAI. The format of the endpoint is as follows: https://{XXXXXXXX}.openai.azure.com/openai/deployments/{MODEL_NAME}/chat/completions?api-version={API_VERSION}
 
 ### OpenAI Models
 
-In case you don't use Azure Open AI Service, you can choose which model to use, the supported models are "gpt-4o", "gpt-4", "gpt-3.5-turbo" and "gpt-3.5-turbo-16k". if no model is selected the "gpt-4o" is used.
+In case you don't use Azure OpenAI Service, you can choose which model to use, the supported models are "gpt-4o", "gpt-4", "gpt-3.5-turbo" and "gpt-3.5-turbo-16k". if no model is selected the "gpt-4o" is used.
 
 ## How to use it
 
