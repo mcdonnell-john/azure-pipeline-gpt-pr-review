@@ -1,0 +1,70 @@
+name: Publish Azure DevOps Extension
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish-extension:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node 20.x
+        uses: actions/setup-node@v4
+        with:
+            node-version: '20.x'
+
+      - run: npm ci
+        working-directory: ./GPTPullRequestReview
+        
+      - run: npm run build
+        working-directory: ./GPTPullRequestReview
+
+      - name: Bump npm version
+        run: |
+          npm version patch --no-git-tag-version
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add package.json
+          git commit -m "Bump version [skip ci]"
+          git push
+        working-directory: ./GPTPullRequestReview
+
+      - name: Bump extension version
+        run: |
+          node scripts/bump-extension-version.js
+          git add vss-extension.json
+          git commit -m "Sync extension version [skip ci]"
+          git push
+
+      - name: Install tfx-cli
+        run: npm install -g tfx-cli
+
+      - name: Package extension
+        run: |
+          tfx extension create --manifest-globs vss-extension.json
+
+      - name: Publish extension
+        env:
+          AZURE_DEVOPS_EXT_PAT: ${{ secrets.AZURE_DEVOPS_EXT_PAT }}
+        run: |
+          tfx extension publish --manifest-globs vss-extension.json --publisher mcdonnell-john --token $(AZURE_DEVOPS_EXT_PAT)
+
+      - name: Create Git Tag
+        run: |
+          git tag v${{ env.VERSION }}
+          git push origin v${{ env.VERSION }}
+        
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ env.VERSION }}
+          name: Release v${{ env.VERSION }}
+          body: |
+            Automated release for Azure DevOps extension version v${{ env.VERSION}}.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
