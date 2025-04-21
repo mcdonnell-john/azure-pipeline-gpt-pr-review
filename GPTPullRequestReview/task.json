@@ -1,118 +1,118 @@
 {
-    "id": "33cf750f-7ccf-4fbf-8570-ea7891dab15a",
-    "name": "OpenAIPRReviewer",
-    "friendlyName": "Review PullRequest by GPT",
-    "description": "This task uses OpenAI to automatically review pull requests.",
-    "author": "John McDonnell",
-    "helpMarkDown": "[More Information](https://github.com/mcdonnell-john/azure-pipeline-gpt-pr-review)",
-    "category": "Utility",
-    "visibility": [
-        "Build"
-    ],
-    "demands": [],
-    "version": {
-        "Major": "1",
-        "Minor": "0",
-        "Patch": "18"
+  "id": "33cf750f-7ccf-4fbf-8570-ea7891dab15a",
+  "name": "OpenAIPRReviewer",
+  "friendlyName": "Review PullRequest by GPT",
+  "description": "This task uses OpenAI to automatically review pull requests.",
+  "author": "John McDonnell",
+  "helpMarkDown": "[More Information](https://github.com/mcdonnell-john/azure-pipeline-gpt-pr-review)",
+  "category": "Utility",
+  "visibility": [
+    "Build"
+  ],
+  "demands": [],
+  "version": {
+    "Major": "1",
+    "Minor": "0",
+    "Patch": "181"
+  },
+  "minimumAgentVersion": "2.226.1",
+  "instanceNameFormat": "OpenAIPRReviewer $(message)",
+  "inputs": [
+    {
+      "name": "openAIProvider",
+      "type": "pickList",
+      "label": "OpenAI Provider",
+      "options": {
+        "ChatGPT": "ChatGPT",
+        "AzureOpenAI": "Azure OpenAI"
+      },
+      "defaultValue": "ChatGPT",
+      "required": true
     },
-    "minimumAgentVersion": "2.226.1",
-    "instanceNameFormat": "OpenAIPRReviewer $(message)",
-    "inputs": [
-        {
-            "name": "openAIProvider",
-            "type": "pickList",
-            "label": "OpenAI Provider",
-            "options": {
-                "ChatGPT": "ChatGPT",
-                "AzureOpenAI": "Azure OpenAI"
-            },
-            "defaultValue": "ChatGPT",
-            "required": true
-        },
-        {
-            "name": "api_key",
-            "type": "string",
-            "label": "API key",
-            "defaultValue": "",
-            "required": true,
-            "helpMarkDown": "API key of OpenAI or Azure OpenAI."
-        },
-        {
-            "name": "model",
-            "type": "pickList",
-            "label": "OpenAI model",
-            "visibleRule": "openAIProvider = ChatGPT",
-            "required": false,
-            "options": {
-                "": "",
-                "gpt-4o": "GPT 4o",
-                "gpt-4": "GPT 4",
-                "gpt-4-turbo": "GPT 4 Turbo",
-                "gpt-3.5-turbo": "GPT 3.5 Turbo",
-                "gpt-3.5-turbo-16k": "GPT 3.5 Turbo 16k"
-            },
-            "helpMarkDown": "The OpenAI model to use.  If no model is selected, gpt-4o will be used by default."
-        },
-        {
-            "name": "azure_openai_endpoint",
-            "type": "string",
-            "label": "Azure OpenAI API Endpoint",
-            "visibleRule": "openAIProvider = AzureOpenAI",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "If using Azure OpenAI, specify the API endpoint here."
-        },
-        {
-            "name": "azure_openai_deployment",
-            "type": "string",
-            "label": "Azure OpenAI Deployment Name",
-            "visibleRule": "openAIProvider = AzureOpenAI",
-            "required": false,
-            "defaultValue": "",
-            "helpMarkDown": "Deployment name to use in Azure OpenAI. This is different from the model name."
-        },
-        {
-            "name": "azureOpenAiApiVersion",
-            "type": "string",
-            "label": "Azure OpenAI API Version",
-            "visibleRule": "openAIProvider = AzureOpenAI",
-            "required": false,
-            "defaultValue": "",
-            "helpMarkDown": "API Version to use in Azure OpenAI. This is different from the model name."
-        },
-        {
-            "name": "enableAdvancedSettings",
-            "type": "boolean",
-            "label": "Enable Advanced Settings",
-            "defaultValue": "false",
-            "required": false,
-            "helpMarkDown": "Select this option to enable advanced settings."
-        },
-        {
-            "name": "advancedSettingsLabel",
-            "type": "string",
-            "label": "Advanced Settings",
-            "visibleRule": "enableAdvancedSettings = true",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "_Configure additional options for fine-tuned behavior._",
-            "properties": {
-                "isReadOnly": true
-            }
-        },
-        {
-            "name": "systemPrompt",
-            "type": "string",
-            "label": "OpenAI System Prompt",
-            "visibleRule": "enableAdvancedSettings = true",
-            "required": false,
-            "defaultValue": "",
-            "helpMarkDown": "The system prompt that guides the AI's review behavior and tone. (Optional)"
-        }
-    ],
-    "execution": {
-        "Node20_1": {
-            "target": "dist/index.js"
-        }
+    {
+      "name": "api_key",
+      "type": "string",
+      "label": "API key",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "API key of OpenAI or Azure OpenAI."
+    },
+    {
+      "name": "model",
+      "type": "pickList",
+      "label": "OpenAI model",
+      "visibleRule": "openAIProvider = ChatGPT",
+      "required": false,
+      "options": {
+        "": "",
+        "gpt-4o": "GPT 4o",
+        "gpt-4": "GPT 4",
+        "gpt-4-turbo": "GPT 4 Turbo",
+        "gpt-3.5-turbo": "GPT 3.5 Turbo",
+        "gpt-3.5-turbo-16k": "GPT 3.5 Turbo 16k"
+      },
+      "helpMarkDown": "The OpenAI model to use.  If no model is selected, gpt-4o will be used by default."
+    },
+    {
+      "name": "azure_openai_endpoint",
+      "type": "string",
+      "label": "Azure OpenAI API Endpoint",
+      "visibleRule": "openAIProvider = AzureOpenAI",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "If using Azure OpenAI, specify the API endpoint here."
+    },
+    {
+      "name": "azure_openai_deployment",
+      "type": "string",
+      "label": "Azure OpenAI Deployment Name",
+      "visibleRule": "openAIProvider = AzureOpenAI",
+      "required": false,
+      "defaultValue": "",
+      "helpMarkDown": "Deployment name to use in Azure OpenAI. This is different from the model name."
+    },
+    {
+      "name": "azureOpenAiApiVersion",
+      "type": "string",
+      "label": "Azure OpenAI API Version",
+      "visibleRule": "openAIProvider = AzureOpenAI",
+      "required": false,
+      "defaultValue": "",
+      "helpMarkDown": "API Version to use in Azure OpenAI. This is different from the model name."
+    },
+    {
+      "name": "enableAdvancedSettings",
+      "type": "boolean",
+      "label": "Enable Advanced Settings",
+      "defaultValue": "false",
+      "required": false,
+      "helpMarkDown": "Select this option to enable advanced settings."
+    },
+    {
+      "name": "advancedSettingsLabel",
+      "type": "string",
+      "label": "Advanced Settings",
+      "visibleRule": "enableAdvancedSettings = true",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "_Configure additional options for fine-tuned behavior._",
+      "properties": {
+        "isReadOnly": true
+      }
+    },
+    {
+      "name": "systemPrompt",
+      "type": "string",
+      "label": "OpenAI System Prompt",
+      "visibleRule": "enableAdvancedSettings = true",
+      "required": false,
+      "defaultValue": "",
+      "helpMarkDown": "The system prompt that guides the AI's review behavior and tone. (Optional)"
     }
+  ],
+  "execution": {
+    "Node20_1": {
+      "target": "dist/index.js"
+    }
+  }
 }
