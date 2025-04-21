@@ -14,8 +14,12 @@ console.log(`✅ vss-extension.json version set to ${pkg.version}`);
 const taskPath = './GPTPullRequestReview/task.json';
 const task = JSON.parse(fs.readFileSync(taskPath, 'utf8'));
 
-const [major, minor, patch] = task.version;
-task.version = [major, minor, patch + 1];
+const { Major, Minor, Patch } = task.version;
+task.version = {
+    Major,
+    Minor,
+    Patch: Patch + 1
+};
 
 fs.writeFileSync(taskPath, JSON.stringify(task, null, 2));
 console.log(`✅ task.json patch version bumped to ${task.version.join('.')}`);
