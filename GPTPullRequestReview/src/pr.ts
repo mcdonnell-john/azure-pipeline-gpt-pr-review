@@ -17,7 +17,7 @@ export async function addCommentToPR(
     const git: GitApi.IGitApi = await webApi.getGitApi();
 
     const iterations = await git.getPullRequestIterations(repoName, prId, project);
-    console.log(`PR Iterations: ${JSON.stringify(iterations)}`);
+
     const firstComparingIterationId = iterations[iterations.length - 2].id;
     const secondComparingIterationId = iterations[iterations.length - 1].id;
 
@@ -45,8 +45,6 @@ export async function addCommentToPR(
     };
 
     const createdThread = await git.createThread(thread, repoName, prId, project);
-    console.log(`Added comment to ${filePath}. Thread ID: ${createdThread.id}`);
-    console.log(`Added comment to ${filePath}. Comment: ${JSON.stringify(thread)}`);
     return createdThread.id;
 }
 

@@ -13,7 +13,7 @@ export async function reviewFile(
     azureOpenAiDeployment: string | undefined,
     azureOpenAiApiVersion: string | undefined
 ) {
-    console.log(`Start reviewing1 ${fileName} ...`);
+    console.log(`Start reviewing ${fileName} ...`);
 
     const defaultOpenAIModel = 'gpt-4o';
     const patch = await git.diff([targetBranch, '--', fileName]);
@@ -41,8 +41,6 @@ export async function reviewFile(
             azureOpenAiApiVersion
         );
 
-        console.log(`Using patch: ${patch}`);
-
         const diffLines = parseDiff(patch);
 
         for (const { lineNumber, diffChunk } of diffLines) {
@@ -50,7 +48,6 @@ export async function reviewFile(
 
             console.log(`Reviewing lines ${lineNumber} in ${fileName}...`);
             console.log(`Diff chunk: ${diffChunk}`);
-            console.log(`Conversation history: ${JSON.stringify(conversationHistory)}`);
 
             const feedback = await getOpenAIFeedback(conversationHistory, client, model);
 
@@ -74,7 +71,6 @@ export async function reviewFile(
     }
 }
 
-// Function to parse the diff and extract line numbers and diff chunks
 function parseDiff(diff: string): { lineNumber: number; diffChunk: string }[] {
     const diffLines = diff.split('\n');
     const parsedChunks: { lineNumber: number; diffChunk: string }[] = [];
@@ -92,11 +88,9 @@ function parseDiff(diff: string): { lineNumber: number; diffChunk: string }[] {
                 parsedChunks.push({ lineNumber: startLineNumber!, diffChunk: currentDiff });
             }
 
-            // Start of a new diff chunk, get the line number
-            startLineNumber = parseInt(match[2], 10); // Start line in the new version
-            currentDiff = ''; // Reset the current diff text
+            startLineNumber = parseInt(match[2], 10);
+            currentDiff = '';
         } else if (line.startsWith('+') || line.startsWith('-')) {
-            // Collect only the lines that are modified (added or deleted)
             currentDiff += line + '\n';
         }
     });
@@ -104,8 +98,6 @@ function parseDiff(diff: string): { lineNumber: number; diffChunk: string }[] {
     if (currentDiff) {
         parsedChunks.push({ lineNumber: startLineNumber!, diffChunk: currentDiff });
     }
-
-    console.log(`Parsed diff chunks: ${JSON.stringify(parsedChunks)}`);
 
     return parsedChunks;
 }
