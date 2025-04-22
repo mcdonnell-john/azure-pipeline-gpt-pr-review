@@ -1,55 +1,58 @@
 {
-  "manifestVersion": 1,
-  "id": "DEVOpenAIPRReviewer",
-  "name": "OpenAI Pull Request Reviewer (Dev)",
-  "version": "1.0.1",
-  "publisher": "mcdonnell-john",
-  "galleryFlags": [],
-  "targets": [
-    {
-      "id": "Microsoft.VisualStudio.Services"
-    }
-  ],
-  "description": "A task that reviews Pull Requests using OpenAI (Development Mode)",
-  "categories": [
-    "Azure Pipelines"
-  ],
-  "icons": {
-    "default": "images/icon.png"
-  },
-  "tags": [
-    "OpenAI",
-    "GPT",
-    "pullRequest",
-    "review"
-  ],
-  "files": [
-    {
-      "path": "GPTPullRequestReview"
-    }
-  ],
-  "repository": {
-    "type": "git",
-    "uri": "https://github.com/mcdonnell-john/azure-pipeline-gpt-pr-review"
-  },
-  "content": {
-    "details": {
-      "path": "overview.md"
+    "manifestVersion": 1,
+    "id": "OpenAIPRReviewer-Dev",
+    "name": "OpenAI Pull Request Reviewer (Dev)",
+    "version": "1.0.28",
+    "publisher": "mcdonnell-john",
+    "galleryFlags": [],
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],
+    "description": "A task that reviews Pull Requests using OpenAI (Development Mode)",
+    "categories": [
+        "Azure Pipelines"
+    ],
+    "icons": {
+        "default": "images/icon.png"
     },
-    "license": {
-      "path": "LICENSE"
-    }
-  },
-  "contributions": [
-    {
-      "id": "OpenAIPRReviewer",
-      "type": "ms.vss-distributed-task.task",
-      "targets": [
-        "ms.vss-distributed-task.tasks"
-      ],
-      "properties": {
-        "name": "GPTPullRequestReview"
-      }
-    }
-  ]
+    "tags": [
+        "OpenAI",
+        "GPT",
+        "pullRequest",
+        "review"
+    ],
+    "files": [
+        {
+            "path": "GPTPullRequestReview"
+        },
+        {
+            "path": "GPTPullRequestReview-Dev"
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "uri": "https://github.com/mcdonnell-john/azure-pipeline-gpt-pr-review"
+    },
+    "content": {
+        "details": {
+            "path": "overview.md"
+        },
+        "license": {
+            "path": "LICENSE"
+        }
+    },
+    "contributions": [
+        {
+            "id": "OpenAIPRReviewer-Dev",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "GPTPullRequestReview-Dev"
+            }
+        }
+    ]
 }

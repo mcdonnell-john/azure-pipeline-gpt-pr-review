@@ -27,8 +27,5 @@ const pkg = JSON.parse(fs.readFileSync('./GPTPullRequestReview/package.json', 'u
 // Update vss-extension.json
 updateVersionInFile('./vss-extension.json', pkg.version);
 
-// Update vss-extension-dev.json
-updateVersionInFile('./vss-extension-dev.json', pkg.version);
-
 // Bump patch version in task.json
-bumpTaskPatchVersion('./GPTPullRequestReview/task.json');
+bumpTaskPatchVersion('./GPTPullRequestReview-Prod/task.json');

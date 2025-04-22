@@ -40,9 +40,13 @@ jobs:
       - name: Bump extension version
         run: |
           node scripts/bump-extension-version.js
-          git add .
+          git add vss-extension.json
+          git add ./GPTPullRequestReview-Prod/task.json
           git commit -m "Sync versions [skip ci]"
           git push
+
+      - run: npm run build-prod
+        working-directory: ./GPTPullRequestReview
 
       - name: Install tfx-cli
         run: npm install -g tfx-cli

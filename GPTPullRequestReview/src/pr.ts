@@ -6,7 +6,8 @@ import * as tl from 'azure-pipelines-task-lib/task';
 
 export async function addCommentToPR(
     filePath: string,
-    commentText: string
+    commentText: string,
+    lineNumber: number
 ): Promise<number | undefined> {
     const project = tl.getVariable('SYSTEM.TEAMPROJECT')!;
     const repoName = tl.getVariable('Build.Repository.Name')!;
@@ -15,10 +16,19 @@ export async function addCommentToPR(
     const webApi = getWebApi();
     const git: GitApi.IGitApi = await webApi.getGitApi();
 
+    const iterations = await git.getPullRequestIterations(repoName, prId, project);
+    console.log(`PR Iterations: ${JSON.stringify(iterations)}`);
+    const firstComparingIterationId = iterations[iterations.length - 2].id;
+    const secondComparingIterationId = iterations[iterations.length - 1].id;
+
+    filePath = fixFilePathIfRequired(filePath);
+
     const thread: GitInterfaces.GitPullRequestCommentThread = {
         status: 1,
         threadContext: {
             filePath,
+            rightFileStart: { line: lineNumber, offset: 1 },
+            rightFileEnd: { line: lineNumber, offset: 1 },
         },
         comments: [
             {
@@ -26,11 +36,25 @@ export async function addCommentToPR(
                 commentType: 1,
             },
         ],
+        pullRequestThreadContext: {
+            iterationContext: {
+                firstComparingIteration: firstComparingIterationId,
+                secondComparingIteration: secondComparingIterationId,
+            },
+        },
     };
 
     const createdThread = await git.createThread(thread, repoName, prId, project);
     console.log(`Added comment to ${filePath}. Thread ID: ${createdThread.id}`);
+    console.log(`Added comment to ${filePath}. Comment: ${JSON.stringify(thread)}`);
     return createdThread.id;
+}
+
+function fixFilePathIfRequired(filePath: string) {
+    if (!filePath.startsWith('/')) {
+        filePath = '/' + filePath;
+    }
+    return filePath;
 }
 
 export async function deleteExistingComments(): Promise<void> {

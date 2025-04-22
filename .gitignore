@@ -108,3 +108,9 @@ dist
 **/.DS_Store
 
 *.vsix
+
+# Ignore everything in the folder
+GPTPullRequestReview-*/*
+
+# Except for task.json
+!GPTPullRequestReview-*/task.json

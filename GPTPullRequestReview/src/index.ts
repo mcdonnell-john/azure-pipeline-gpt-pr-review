@@ -3,7 +3,6 @@ import { deleteExistingComments } from './pr';
 import { reviewFile } from './review';
 import { getTargetBranchName } from './utils';
 import { getChangedFiles } from './git';
-import https from 'https';
 
 const SUCCESS_MESSAGE = 'Pull Request reviewed.';
 

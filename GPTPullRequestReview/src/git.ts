@@ -30,7 +30,10 @@ Make sure your YAML includes:
 
     const diffs = await git.diff([targetBranch, '--name-only', '--diff-filter=AM']);
     const files = diffs.split('\n').filter((line) => line.trim().length > 0);
-    const nonBinaryFiles = files.filter(
+
+    const relativePaths = files.map((file) => file.trim());
+
+    const nonBinaryFiles = relativePaths.filter(
         (file) => !binaryExtensions.includes(getFileExtension(file))
     );
 

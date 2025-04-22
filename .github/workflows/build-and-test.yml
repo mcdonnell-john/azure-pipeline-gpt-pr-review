@@ -28,5 +28,5 @@ jobs:
       - run: npm ci
         working-directory: ./GPTPullRequestReview
 
-      - run: npm run build
+      - run: npm run build-dev
         working-directory: ./GPTPullRequestReview
